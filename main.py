@@ -33,3 +33,4 @@ for url in random_urls:
     response2 = requests.get(url, stream=True)
     img = Image.open(response2.raw)
     img.show()
+    img.close()
