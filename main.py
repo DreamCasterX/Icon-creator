@@ -1,17 +1,18 @@
 import requests
 from requests_oauthlib import OAuth1
 from dotenv import load_dotenv
-import os
+from os import getenv
 import json
 from pprint import pprint
 from PIL import Image
+from random import sample
+
 
 load_dotenv()
-api_key = os.getenv("API_KEY")
-api_secret = os.getenv("API_SECRET")
-
-
+api_key = getenv("API_KEY")
+api_secret = getenv("API_SECRET")
 auth = OAuth1(api_key, api_secret)
+
 
 topic = input("What icon would you like to search for? ")
 amount = int(input("Displayed amount? "))
@@ -26,9 +27,9 @@ response_data = json.loads(response.content)
 thumbnail_urls = []
 for icon in response_data["icons"]:
     thumbnail_urls.append(icon["thumbnail_url"])
+random_urls = sample(thumbnail_urls, amount) 
 
-
-for i in range(amount):
-    response2 = requests.get(thumbnail_urls[i - 1], stream=True)
+for url in random_urls:
+    response2 = requests.get(url, stream=True)
     img = Image.open(response2.raw)
     img.show()
